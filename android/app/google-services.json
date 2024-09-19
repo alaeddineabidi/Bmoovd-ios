@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "504655666989",
+    "project_id": "bmoovddatabase",
+    "storage_bucket": "bmoovddatabase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504655666989:android:19c985f900a372d595bda4",
+        "android_client_info": {
+          "package_name": "com.example.bmoovd"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAysG4SzzV0BRAMnnmmwb2_ibKKNIIDtBI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
