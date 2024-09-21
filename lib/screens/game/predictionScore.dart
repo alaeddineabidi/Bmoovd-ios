@@ -17,6 +17,14 @@ class Predictionscore extends StatefulWidget {
 class _PredictionscoreState extends State<Predictionscore> {
     bool isExpanded = false;
     bool showAllUsers = true;
+    Map<String, dynamic>? currentLeague;
+     Future<void> fetchData() async {
+    final data = await ApiServiceFootball.fetchCurrentLeague();
+    setState(() {
+      currentLeague = data;
+    });
+    print("current league $currentLeague");
+  }
 
 
   List<dynamic>? matchData;
@@ -135,6 +143,8 @@ String _formatMatchTime(String dateTime) {
     fetchAndPrintApiData();
     loadMatchDetails();
     _fetchUserName();
+    fetchData();
+    
   }
 
  
