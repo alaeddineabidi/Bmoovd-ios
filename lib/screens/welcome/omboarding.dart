@@ -26,6 +26,7 @@ class _VideoBackgroundPageState extends State<VideoBackgroundPage> {
     _controller = VideoPlayerController.asset('assets/output.mp4')
       ..initialize().then((_) {
         _controller.setLooping(true);
+        _controller.setVolume(0.0);
         _controller.play();
         setState(() {});
       });
