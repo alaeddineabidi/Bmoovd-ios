@@ -330,7 +330,7 @@ int quantity = data != null && data.containsKey('quantity') ? data['quantity'] :
                               {
                                 "amount": {
                                   "total": totalAmount.toStringAsFixed(2),
-                                  "currency": "USD",
+                                  "currency": "EUR",
                                   "details": {
                                     "subtotal": totalAmount.toStringAsFixed(2),
                                     "shipping": '0',
@@ -338,7 +338,6 @@ int quantity = data != null && data.containsKey('quantity') ? data['quantity'] :
                                   }
                                 },
                                 "description": "The payment transaction description.",
-                                // Ajouter les articles
                                 "item_list": {
                                   "items": cartItems.map((item) {
                                     return {

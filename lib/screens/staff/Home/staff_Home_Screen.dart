@@ -1,4 +1,5 @@
 import 'package:bmoovd/screens/auth/Login.dart';
+import 'package:bmoovd/screens/staff/Dein_event_notif/send-notification.dart';
 import 'package:bmoovd/screens/staff/chat/staff_part_chat.dart';
 import 'package:bmoovd/screens/staff/posts/posts.dart';
 import 'package:bmoovd/screens/staff/users/users.dart';
@@ -57,10 +58,14 @@ class StaffHomePage extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Einstellungen'), // "Settings" en allemand
+              leading: const Icon(Icons.notification_add),
+              title: const Text('Dein event notif'), // "Settings" en allemand
               onTap: () {
-                // Naviguer vers la page des paramètres
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NotificationSend()), // Naviguer vers StaffChatPage
+                );
                 
               },
             ),
