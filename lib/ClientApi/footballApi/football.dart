@@ -20,6 +20,17 @@ class ApiServiceFootball {
       return null;
     }
   }
+  static Future<List<dynamic>?> fetchStandings(int year) async {
+    final url = Uri.parse('https://v3.football.api-sports.io/standings?league=78&season=$year');
+    final response = await http.get(url, headers: ApiConfig.headers);
+    if (response.statusCode == 200) {
+      
+      return jsonDecode(response.body)['response'];
+    } else {
+      print("No data ${response.statusCode}");
+      return null;
+    }
+  }
 
  static Future<Map<String, dynamic>?> fetchCurrentLeague() async {
   final url = Uri.parse('https://v3.football.api-sports.io/leagues?id=78');

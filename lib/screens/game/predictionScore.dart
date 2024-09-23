@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:bmoovd/screens/game/PlayedMatch.dart';
 import 'package:bmoovd/screens/game/ordred_users_point.dart';
+import 'package:bmoovd/screens/game/welcomeDialogGame.dart';
 import 'package:bmoovd/widgets/BottomNavigationBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:bmoovd/ClientApi/footballApi/football.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Predictionscore extends StatefulWidget {
   @override
@@ -17,16 +19,34 @@ class Predictionscore extends StatefulWidget {
 class _PredictionscoreState extends State<Predictionscore> {
     bool isExpanded = false;
     bool showAllUsers = true;
+    int year = 0;
     Map<String, dynamic>? currentLeague;
-     Future<void> fetchData() async {
+    List<dynamic>? Standing;
+
+
+  Future<void> fetchData() async {
     final data = await ApiServiceFootball.fetchCurrentLeague();
+    
     setState(() {
+      
       currentLeague = data;
+      year = currentLeague!["season"]["year"];
     });
-    print("current league $currentLeague");
+    final data1 = await ApiServiceFootball.fetchStandings(year);
+    setState(() {
+      Standing = data1 ;
+    });
+   
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? isFirstVisit1 = prefs.getBool('isFirstVisit669');
+
+    if (isFirstVisit1 == null || isFirstVisit1 == true) {
+      print(Standing);
+      Future.delayed(Duration.zero, () => _showWelcomeDialog(context , Standing!));
+      await prefs.setBool('isFirstVisit669', false);
+    }
   }
-
-
+ 
   List<dynamic>? matchData;
   Map<String, Map<String, dynamic>> oddsData = {}; 
     Map<int, bool> expandedStates = {}; 
@@ -35,9 +55,8 @@ class _PredictionscoreState extends State<Predictionscore> {
       if (expandedStates.containsKey(matchId)) {
         expandedStates[matchId] = !expandedStates[matchId]!; // Inverser l'état d'expansion
       } else {
-        // Réinitialiser les autres cartes
         expandedStates = {for (var id in expandedStates.keys) id: false};
-        expandedStates[matchId] = true; // Étendre la carte cliquée
+        expandedStates[matchId] = true; 
       }
     });
   }
@@ -136,20 +155,32 @@ String _formatMatchTime(String dateTime) {
 
     return normalized1.contains(normalized2) || normalized2.contains(normalized1);
   }
+void _showWelcomeDialog(BuildContext context, List<dynamic> teams) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return WelcomeDialog(teams: teams);
+    },
+  );
+}
+
+
+
+
+
+
+
+
 
   @override
   void initState() {
     super.initState();
+    fetchData();
     fetchAndPrintApiData();
     loadMatchDetails();
     _fetchUserName();
-    fetchData();
     
   }
-
- 
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

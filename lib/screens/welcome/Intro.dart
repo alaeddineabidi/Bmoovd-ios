@@ -467,7 +467,7 @@ Stand: August 2024''', // Texte long
             child: Align(
               alignment: Alignment.center,
               child: Image.asset(
-                "assets/images/TutoHome.png",
+                "assets/images/TutoSpiel.png",
                 fit: BoxFit.contain, // Ajuste la taille de l'image pour qu'elle soit visible sans déborder
               ),
             ),
