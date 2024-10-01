@@ -66,7 +66,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         _buildNavItem("assets/icons/Home.png", "Home", 0, const Color(0xFFFABB48)),
         _buildNavItem("assets/icons/Bag.png", "Shop", 1, const Color(0xFF007C7C)),
         _buildNavItem("assets/icons/Gamepad.png", "Spiel", 2, const Color(0xFF91306A)),
-        _buildNavItem("assets/icons/Chat.png", "Chatten", 3, const Color(0xFF5A96F5)),
+        _buildNavItem("assets/icons/Chat.png", "Chat", 3, const Color(0xFF5A96F5)),
         _buildNavItem("assets/icons/Other.png", "Profile", 4, const Color(0xFFE6E7E9)),
       ],
       currentIndex: currentIndex,

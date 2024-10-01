@@ -91,8 +91,8 @@ class _PermissionNotifState extends State<PermissionNotif> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildNotificationItem('Nachrichten', 'Sport- und Wirtschaftsnachrichten'),
-                  _buildNotificationItem('Live-Ergebnisse', 'Live-Sport-Ergebnisse'),
+                  _buildNotificationItem('Sportnachrichten', 'Sport- und Wirtschaftsnachrichten'),
+                  _buildNotificationItem('Spielstände', 'Live-Sport-Ergebnisse'),
                   _buildNotificationItem('Spiel', 'Spielaktualisierungen und Nachrichten'),
                   _buildNotificationItem('Aktivitäten', 'Verfolgen Sie Ihre Aktivitäten'),
                   _buildNotificationItem('Gutscheine', 'Sonderangebote und Gutscheine'),
@@ -102,20 +102,14 @@ class _PermissionNotifState extends State<PermissionNotif> {
           ),
           SwitchListTile(
             title: Text(
-              'Benachrichtigungen aktivieren',
+              'Benachrichtigungen deaktivieren',
               style: GoogleFonts.plusJakartaSans(
                 color: Colors.white,
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            subtitle: Text(
-              'Benachrichtigungsberechtigungen umschalten',
-              style: GoogleFonts.plusJakartaSans(
-                color: Colors.grey[400],
-                fontSize: 12,
-              ),
-            ),
+          
             value: isNotificationEnabled,
             onChanged: (bool value) {
               _toggleNotificationPermission();

@@ -109,7 +109,7 @@ class _ShopMainPageState extends State<ShopMainPage> {
     child: Padding(
       padding: const EdgeInsets.only(left: 30.0),
       child: Text(
-        'Geschäft',
+        'Shop',
         style: GoogleFonts.plusJakartaSans(
           color: Color(0xFFE6E7E9),
           fontWeight: FontWeight.w700,

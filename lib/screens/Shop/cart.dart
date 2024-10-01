@@ -100,7 +100,7 @@ int quantity = (doc.data() as Map<String, dynamic>).containsKey('quantity')
     User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Mein Warenkorb', style: GoogleFonts.poppins(fontWeight: FontWeight.bold))),
+        title: Center(child: Text('Warenkorb', style: GoogleFonts.poppins(fontWeight: FontWeight.bold))),
         leading: IconButton(onPressed: () {
           Navigator.pop(context);
         }, icon: Image.asset("assets/icons/back_arrow.png")),

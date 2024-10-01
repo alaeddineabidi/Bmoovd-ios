@@ -167,7 +167,7 @@ class _VideoBackgroundPageState extends State<VideoBackgroundPage> {
                 }
               },
               child: Text(
-                "Melden Sie sich als Gast an",
+                "Melde Dich als Gast an",
                 style: GoogleFonts.plusJakartaSans(
                   color: Color(0xffE6E7E9),
                   decoration: TextDecoration.underline,

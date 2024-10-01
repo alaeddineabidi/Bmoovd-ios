@@ -235,7 +235,7 @@ class _IntroPageState extends State<IntroPage> {
           ),
           SizedBox(height: 20),
           Text(
-            "Bevor Sie beginnen, lesen und akzeptieren Sie bitte das Folgende.",
+            "Bevor Du beginnst, lies und akzeptiere bitte das Folgende.",
             style: GoogleFonts.plusJakartaSans(
               fontSize: 14,
               color: Color(0xffB3B3B3),
