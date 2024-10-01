@@ -38,12 +38,12 @@ class _PredictionscoreState extends State<Predictionscore> {
     });
    
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? isFirstVisit1 = prefs.getBool('isFirstVisit669');
+    bool? isFirstVisit1 = prefs.getBool('isFirstVisit');
 
     if (isFirstVisit1 == null || isFirstVisit1 == true) {
       print(Standing);
       Future.delayed(Duration.zero, () => _showWelcomeDialog(context , Standing!));
-      await prefs.setBool('isFirstVisit669', false);
+      await prefs.setBool('isFirstVisit', false);
     }
   }
  
@@ -245,7 +245,7 @@ void _showWelcomeDialog(BuildContext context, List<dynamic> teams) {
               Padding(
                 padding: const EdgeInsets.only(top: 10.0, left: 10),
                 child: Text(
-                  "Gespielte spiele",
+                  "Spiele",
                   style: GoogleFonts.plusJakartaSans(
                     color: Color(0xFFE6E7E9),
                     fontSize: 12.8,
@@ -258,7 +258,7 @@ void _showWelcomeDialog(BuildContext context, List<dynamic> teams) {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Text(
-                  "Klicken Sie hier, um die Spiele anzuzeigen, die Sie kürzlich gespielt haben.",
+                  "Klicken hier, um die Spiele anzuzeigen, die Du kürzlich gespielt hast.",
                   style: GoogleFonts.plusJakartaSans(
                     color: Color(0xFFB3B3B3), // Couleur de texte
                     fontSize: 14,

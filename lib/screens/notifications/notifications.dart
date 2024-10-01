@@ -165,7 +165,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
                         ),
                         SizedBox(height: 10,),
                         Text(
-                          "Wir informieren Sie, wenn es Neuigkeiten für Sie gibt.",
+                          "Wir informieren Dich, wenn es Neuigkeiten für Dich gibt.",
                           style: GoogleFonts.plusJakartaSans(
                             color: Color(0xff808080),
                             fontSize: 16,

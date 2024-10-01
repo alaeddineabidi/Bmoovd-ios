@@ -66,7 +66,7 @@ class UserPredictions extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:Center(child: Text("Vorhersagen von Freund",style: GoogleFonts.plusJakartaSans(color: Color(0xffCFCFCF),fontSize: 16,fontWeight: FontWeight.w700),)) ,
+        title:Center(child: Text("Freunden",style: GoogleFonts.plusJakartaSans(color: Color(0xffCFCFCF),fontSize: 16,fontWeight: FontWeight.w700),)) ,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);

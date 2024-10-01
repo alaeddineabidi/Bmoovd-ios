@@ -139,7 +139,7 @@ class _IntroPageState extends State<IntroPage> {
                         children: [
                           Image.asset("assets/icons/precedent.png"),
                           Text(
-                            "vorherige",
+                            "Vorherige",
                             style: GoogleFonts.plusJakartaSans(
                               color: Color(0xffE6E7E9),
                               fontSize: 14,
@@ -382,7 +382,7 @@ Stand: August 2024''', // Texte long
           ),
           SizedBox(height: 20),
           Text(
-            "Herzlich willkommen! Wir starten mit einem kurzen funktionsüberblick",
+            "Herzlich willkommen! Wir starten mit einem kurzen Funktionsüberblick",
             style: GoogleFonts.plusJakartaSans(
               fontSize: 14,
               color: Color(0xffB3B3B3),
@@ -454,7 +454,7 @@ Stand: August 2024''', // Texte long
           ),
           SizedBox(height: 20),
           Text(
-            "Herzlich willkommen! Wir starten mit einem kurzen funktionsüberblick",
+            "Herzlich willkommen! Wir starten mit einem kurzen Funktionsüberblick",
             style: GoogleFonts.plusJakartaSans(
               fontSize: 14,
               color: Color(0xffB3B3B3),

@@ -637,7 +637,9 @@ Widget _buildGroupUsersList() {
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: Text(
-                          "Erstellen Sie eine \npersönliche Gruppe",
+                          
+                          "Erstelle eine persönliche Gruppe"
+,
                           style: GoogleFonts.plusJakartaSans(color: Color(0xffE6E7E9), fontSize: 14, fontWeight: FontWeight.w500),
                         ),
                       )
