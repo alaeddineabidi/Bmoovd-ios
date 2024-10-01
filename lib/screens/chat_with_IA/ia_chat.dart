@@ -95,7 +95,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
                         children: [
                           SizedBox(width: 10),
                           Text(
-                            'en train d\'écrire...',
+                            'am Schreiben...',
                             style: GoogleFonts.plusJakartaSans(
                               color: Colors.grey,
                               fontStyle: FontStyle.italic,

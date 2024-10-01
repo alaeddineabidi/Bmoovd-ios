@@ -8,7 +8,8 @@ class UsersPage extends StatefulWidget {
 }
 
 class _UsersPageState extends State<UsersPage> {
-  String searchQuery = "";  // Variable to store the search query
+  String searchQuery = "";  // Variable to store the search query for user name
+  String championQuery = "";  // Variable to store the search query for champion
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class _UsersPageState extends State<UsersPage> {
       ),
       body: Column(
         children: [
-          // Search Bar
+          // Search Bar for Name
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -39,6 +40,29 @@ class _UsersPageState extends State<UsersPage> {
               },
               decoration: InputDecoration(
                 labelText: 'Search by name',
+                labelStyle: TextStyle(color: Colors.grey),
+                prefixIcon: Icon(Icons.search, color: Colors.grey),
+                filled: true,
+                fillColor: Color(0xff1A1C20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              style: GoogleFonts.plusJakartaSans(color: Colors.white),
+            ),
+          ),
+          // Search Bar for Champion
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  championQuery = value.toLowerCase(); // Update search query for champion
+                });
+              },
+              decoration: InputDecoration(
+                labelText: 'Search by champion',
                 labelStyle: TextStyle(color: Colors.grey),
                 prefixIcon: Icon(Icons.search, color: Colors.grey),
                 filled: true,
@@ -64,10 +88,11 @@ class _UsersPageState extends State<UsersPage> {
                   return Center(child: Text('No users found.'));
                 }
 
-                // Filter users based on search query
+                // Filter users based on search query and champion query
                 final users = snapshot.data!.docs.where((doc) {
                   final userName = (doc.data() as Map<String, dynamic>)['name']?.toLowerCase() ?? '';
-                  return userName.contains(searchQuery);
+                  final userChampion = (doc.data() as Map<String, dynamic>)['champion']?.toLowerCase() ?? '';
+                  return userName.contains(searchQuery) && userChampion.contains(championQuery);
                 }).toList();
 
                 if (users.isEmpty) {
@@ -92,7 +117,8 @@ class _UsersPageState extends State<UsersPage> {
                       subtitle: Text(
                         'Email: ${user['email'] ?? 'No Email'}\n'
                         'Role: ${user['role'] ?? 'No Role'}\n'
-                        'Points: ${user['points'] ?? 0}',
+                        'Points: ${user['points'] ?? 0}\n'
+                        'Champion: ${user['champion'] ?? 'Not choiced'}\n',
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 14.0,
                           color: Colors.grey[400],
@@ -103,11 +129,24 @@ class _UsersPageState extends State<UsersPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      trailing: IconButton(
-                        icon: Icon(Icons.restore, color: Colors.red),
-                        onPressed: () {
-                          _confirmResetDialog(context, userId, user['name']);
-                        },
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Reset Points Button
+                          IconButton(
+                            icon: Icon(Icons.restore, color: Colors.red),
+                            onPressed: () {
+                              _confirmResetDialog(context, userId, user['name']);
+                            },
+                          ),
+                          // Delete User Button
+                          IconButton(
+                            icon: Icon(Icons.delete, color: Colors.red),
+                            onPressed: () {
+                              _confirmDeleteDialog(context, userId, user['name']);
+                            },
+                          ),
+                        ],
                       ),
                     );
                   },
@@ -145,10 +184,43 @@ class _UsersPageState extends State<UsersPage> {
     );
   }
 
+  void _confirmDeleteDialog(BuildContext context, String userId, String? userName) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Delete User'),
+          content: Text('Are you sure you want to delete ${userName ?? 'this user'}? This action cannot be undone.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                _deleteUser(userId);
+                Navigator.pop(context);
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _resetUserPoints(String userId) {
     FirebaseFirestore.instance
         .collection('users')
         .doc(userId)
         .update({'points': 0});
   }
+
+  void _deleteUser(String userId) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .delete();
+  }
 }
+

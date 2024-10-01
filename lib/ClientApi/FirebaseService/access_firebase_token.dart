@@ -3,7 +3,7 @@ import 'package:googleapis_auth/auth_io.dart';
 class AccessTokenFirebase{
   static String FirebaseMessagingScope = "https://www.googleapis.com/auth/firebase.messaging";
 
-  Future<String> getAccessToken() async {
+ static Future<String> getAccessToken() async {
     final client = await clientViaServiceAccount(ServiceAccountCredentials.fromJson({
       "type": "service_account",
       "project_id": "bmoovddatabase",

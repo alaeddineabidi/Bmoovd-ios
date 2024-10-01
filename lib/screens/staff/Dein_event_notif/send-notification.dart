@@ -1,11 +1,28 @@
 import 'dart:convert';
-import 'package:bmoovd/constant/apiConfig/api-header.dart';
+import 'package:bmoovd/ClientApi/FirebaseService/access_firebase_token.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-class NotificationSend extends StatelessWidget{
 
- Future<void> _sendNotificationToAllUsers() async {
+class NotificationSend extends StatefulWidget {
+  @override
+  _NotificationSendState createState() => _NotificationSendState();
+}
+
+class _NotificationSendState extends State<NotificationSend> {
+  bool isLoading = false;
+  String statusMessage = '';
+  String? accessToken;
+
+  Future<void> _sendNotificationToAllUsers() async {
+    setState(() {
+      isLoading = true;
+      statusMessage = 'Sending notifications...';
+    });
+
+    // Fetch the access token outside setState
+    final fetchedAccessToken = await AccessTokenFirebase.getAccessToken();
+
     final usersCollection = FirebaseFirestore.instance.collection('users');
     final usersSnapshot = await usersCollection.get();
 
@@ -14,27 +31,33 @@ class NotificationSend extends StatelessWidget{
       final fcmToken = userData['fcmToken'];
 
       if (fcmToken != null) {
-        await _sendNotification(fcmToken);
+        await _sendNotification(fcmToken, fetchedAccessToken);
       }
     }
+
+    // Now update the state once all notifications are sent
+    setState(() {
+      isLoading = false;
+      statusMessage = 'Notifications sent successfully!';
+      accessToken = fetchedAccessToken; // Save the access token to state
+    });
   }
 
-  Future<void> _sendNotification(String fcmToken) async {
+  Future<void> _sendNotification(String fcmToken, String? accessToken) async {
     final url = Uri.parse('https://fcm.googleapis.com/v1/projects/bmoovddatabase/messages:send');
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${ApiConfig.accessToken}', // Replace with your actual access token
+      'Authorization': 'Bearer $accessToken', // Use the fetched access token
     };
-    
-    // Correct the payload by changing "notifications" to "notification"
+
     final notification = {
-     "message":{
-        "token":fcmToken,
-        "notification":{ // Use "notification" instead of "notifications"
-          "title":"newNotification",
-          "body":"new"
+      "message": {
+        "token": fcmToken,
+        "notification": {
+          "title": "Neue Benachrichtigung", // German for "newNotification"
+          "body": "Dein Event steht an!"    // German for "Your event is coming up!"
         }
-     }
+      }
     };
 
     final response = await http.post(
@@ -50,18 +73,25 @@ class NotificationSend extends StatelessWidget{
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Center(
-        child: ElevatedButton(onPressed: () async {
-
-         _sendNotificationToAllUsers();
-         print("done");
-        }, child: Container(
-          child: Text("click here to send notifications to all users"),
-        )),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: () async {
+                      await _sendNotificationToAllUsers();
+                    },
+                    child: Text("Click here to send notifications to all users"),
+                  ),
+            SizedBox(height: 20),
+            Text(statusMessage),
+          ],
+        ),
       ),
     );
   }
