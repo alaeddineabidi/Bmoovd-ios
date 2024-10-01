@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bmoovd/screens/HomeScreen/HomeScreen.dart';
 import 'package:bmoovd/screens/auth/Login.dart';
 import 'package:bmoovd/screens/auth/Register.dart';
@@ -137,7 +139,7 @@ class _VideoBackgroundPageState extends State<VideoBackgroundPage> {
             ),
           ),
           Positioned(
-            top:20,
+            top:Platform.isIOS ? 50 : 20,
             right: 0,
             left: 0,
             child: Image.asset("assets/logo/bmoovd_wortmarke_subline_wht.png",height: 70,)),
@@ -145,128 +147,55 @@ class _VideoBackgroundPageState extends State<VideoBackgroundPage> {
             bottom: 10,
             left: 0,
             right: 0,
-            child: Column(
-              children: [
-                Center(
-                  child: InkWell(
-                    onTap: () async {
-                      if (isFirstTime) {
-                        _navigateToIntroPage("HomeScreen");
-                            SharedPreferences prefs = await SharedPreferences.getInstance();
-
-                        await prefs.setBool('first_time', false);
-
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                        );
-                      }
-                    },
-                    child: Text(
-                      "Melden Sie sich als Gast an",
-                      style: GoogleFonts.plusJakartaSans(
-                        color: Color(0xffE6E7E9),
-                        decoration: TextDecoration.underline,
-                        decorationColor: Color(0xffE6E7E9),
-                        fontSize: 14,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+           child: Platform.isIOS 
+  ? Padding(
+      padding: const EdgeInsets.all(16.0), // Ajuste le padding selon tes besoins
+      child: Column(
+        children: [
+          Center(
+            child: InkWell(
+              onTap: () async {
+                if (isFirstTime) {
+                  _navigateToIntroPage("HomeScreen");
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  await prefs.setBool('first_time', false);
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
+                }
+              },
+              child: Text(
+                "Melden Sie sich als Gast an",
+                style: GoogleFonts.plusJakartaSans(
+                  color: Color(0xffE6E7E9),
+                  decoration: TextDecoration.underline,
+                  decorationColor: Color(0xffE6E7E9),
+                  fontSize: 14,
                 ),
-                SizedBox(height: 15),
-                Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () async {
-                          if (isFirstTime) {
-                            _navigateToIntroPage("Signup");
-                            SharedPreferences prefs = await SharedPreferences.getInstance();
-
-                        await prefs.setBool('first_time', false);
-
-                          } else {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => SignupPage()),
-                            );
-                          }
-                        },
-                        child: Container(
-                          height: 50,
-                          margin: EdgeInsets.symmetric(horizontal: 4),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(width: 2, color: Color(0xffB3B3B3)),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Registrieren",
-                              style: GoogleFonts.plusJakartaSans(
-                                color: Color(0xffE6E7E9),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () async {
-                          if (isFirstTime) {
-                            _navigateToIntroPage("LoginPage");
-                            SharedPreferences prefs = await SharedPreferences.getInstance();
-
-                        await prefs.setBool('first_time', false);
-
-                          } else {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => LoginPage()),
-                            );
-                          }
-                        },
-                        child: Container(
-                          height: 50,
-                          margin: EdgeInsets.symmetric(horizontal: 4),
-                          decoration: BoxDecoration(
-                            color: Color(0xff007C7C),
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Login",
-                              style: GoogleFonts.plusJakartaSans(
-                                color: Color(0xffE6E7E9),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 15),
-                InkWell(
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          SizedBox(height: 15),
+          Row(
+            children: [
+              Expanded(
+                child: InkWell(
                   onTap: () async {
-                          if (isFirstTime) {
-                            _navigateToIntroPage("Google");
-                            SharedPreferences prefs = await SharedPreferences.getInstance();
-
-                        await prefs.setBool('first_time', false);
-
-                          } else {
-                            signInWithGoogle();
-                          }
-                        },
+                    if (isFirstTime) {
+                      _navigateToIntroPage("Signup");
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      await prefs.setBool('first_time', false);
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignupPage()),
+                      );
+                    }
+                  },
                   child: Container(
-                    width: double.infinity,
                     height: 50,
                     margin: EdgeInsets.symmetric(horizontal: 4),
                     decoration: BoxDecoration(
@@ -274,26 +203,237 @@ class _VideoBackgroundPageState extends State<VideoBackgroundPage> {
                       border: Border.all(width: 2, color: Color(0xffB3B3B3)),
                     ),
                     child: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset("assets/icons/google1.png"),
-                          SizedBox(width: 10),
-                          Text(
-                            "Mit Google anmelden",
-                            style: GoogleFonts.plusJakartaSans(
-                              color: Color(0xffE6E7E9),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
+                      child: Text(
+                        "Registrieren",
+                        style: GoogleFonts.plusJakartaSans(
+                          color: Color(0xffE6E7E9),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ],
+              ),
+              Expanded(
+                child: InkWell(
+                  onTap: () async {
+                    if (isFirstTime) {
+                      _navigateToIntroPage("LoginPage");
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      await prefs.setBool('first_time', false);
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
+                    }
+                  },
+                  child: Container(
+                    height: 50,
+                    margin: EdgeInsets.symmetric(horizontal: 4),
+                    decoration: BoxDecoration(
+                      color: Color(0xff007C7C),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Login",
+                        style: GoogleFonts.plusJakartaSans(
+                          color: Color(0xffE6E7E9),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 15),
+          InkWell(
+            onTap: () async {
+              if (isFirstTime) {
+                _navigateToIntroPage("Google");
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.setBool('first_time', false);
+              } else {
+                signInWithGoogle();
+              }
+            },
+            child: Container(
+              width: double.infinity,
+              height: 50,
+              margin: EdgeInsets.symmetric(horizontal: 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(width: 2, color: Color(0xffB3B3B3)),
+              ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset("assets/icons/google1.png"),
+                    SizedBox(width: 10),
+                    Text(
+                      "Mit Google anmelden",
+                      style: GoogleFonts.plusJakartaSans(
+                        color: Color(0xffE6E7E9),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
+          ),
+        ],
+      ),
+    )
+  : Column(
+      children: [
+        // La même colonne sans padding
+        Center(
+          child: InkWell(
+            onTap: () async {
+              if (isFirstTime) {
+                _navigateToIntroPage("HomeScreen");
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.setBool('first_time', false);
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
+              }
+            },
+            child: Text(
+              "Melden Sie sich als Gast an",
+              style: GoogleFonts.plusJakartaSans(
+                color: Color(0xffE6E7E9),
+                decoration: TextDecoration.underline,
+                decorationColor: Color(0xffE6E7E9),
+                fontSize: 14,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+        SizedBox(height: 15),
+        Row(
+          children: [
+            Expanded(
+              child: InkWell(
+                onTap: () async {
+                  if (isFirstTime) {
+                    _navigateToIntroPage("Signup");
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    await prefs.setBool('first_time', false);
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignupPage()),
+                    );
+                  }
+                },
+                child: Container(
+                  height: 50,
+                  margin: EdgeInsets.symmetric(horizontal: 4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(width: 2, color: Color(0xffB3B3B3)),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Registrieren",
+                      style: GoogleFonts.plusJakartaSans(
+                        color: Color(0xffE6E7E9),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: InkWell(
+                onTap: () async {
+                  if (isFirstTime) {
+                    _navigateToIntroPage("LoginPage");
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    await prefs.setBool('first_time', false);
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  }
+                },
+                child: Container(
+                  height: 50,
+                  margin: EdgeInsets.symmetric(horizontal: 4),
+                  decoration: BoxDecoration(
+                    color: Color(0xff007C7C),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Login",
+                      style: GoogleFonts.plusJakartaSans(
+                        color: Color(0xffE6E7E9),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 15),
+        InkWell(
+          onTap: () async {
+            if (isFirstTime) {
+              _navigateToIntroPage("Google");
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.setBool('first_time', false);
+            } else {
+              signInWithGoogle();
+            }
+          },
+          child: Container(
+            width: double.infinity,
+            height: 50,
+            margin: EdgeInsets.symmetric(horizontal: 4),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              border: Border.all(width: 2, color: Color(0xffB3B3B3)),
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("assets/icons/google1.png"),
+                  SizedBox(width: 10),
+                  Text(
+                    "Mit Google anmelden",
+                    style: GoogleFonts.plusJakartaSans(
+                      color: Color(0xffE6E7E9),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
           ),
         ],
       ),

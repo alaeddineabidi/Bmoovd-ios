@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bmoovd/screens/HomeScreen/HomeScreen.dart';
 import 'package:bmoovd/screens/auth/Login.dart';
 import 'package:bmoovd/screens/auth/Register.dart';
@@ -105,7 +107,7 @@ class _IntroPageState extends State<IntroPage> {
             ],
           ),
           Positioned(
-            bottom: 5,
+            bottom: Platform.isIOS ? 10 : 5,
             left: 0,
             right: 0,
             child: Center(
@@ -122,7 +124,7 @@ class _IntroPageState extends State<IntroPage> {
             ),
           ),
           Positioned(
-            bottom: 0,
+            bottom: Platform.isIOS ? 10 : 0,
             left: 0,
             right: 0,
             child: Padding(

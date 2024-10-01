@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:bmoovd/screens/game/show1UserPred.dart';
 import 'package:bmoovd/screens/notifications/sendNotifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,16 +28,20 @@ void _createGroup(BuildContext context) {
         builder: (context, setState) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10), // Rayon des coins
+              borderRadius: BorderRadius.circular(10),
             ),
-            backgroundColor: Color(0xFF15161A), // Couleur de fond personnalisée
-            title: Text('Erstellen Sie eine neue Gruppe', style: GoogleFonts.plusJakartaSans(color: Color(0xffCFCFCF),fontSize: 14,fontWeight: FontWeight.w600)),
-            content: SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: 300), // Hauteur fixe du contenu
+            backgroundColor: Color(0xFF15161A),
+            title: Text(
+              'Erstellen Sie eine neue Gruppe',
+              style: GoogleFonts.plusJakartaSans(color: Color(0xffCFCFCF), fontSize: 14, fontWeight: FontWeight.w600),
+            ),
+            content: Container(
+              width: double.maxFinite, // Make the dialog content expand to the max width
+              child: SingleChildScrollView(
                 child: Column(
+                  mainAxisSize: MainAxisSize.min, // Adjusts to the size of its children
                   children: [
-                    // Champ pour le nom du groupe
+                    // Group name input field
                     TextField(
                       style: GoogleFonts.poppins(color: Colors.white),
                       onChanged: (value) {
@@ -43,26 +50,24 @@ void _createGroup(BuildContext context) {
                         });
                       },
                       decoration: InputDecoration(
-                        
                         hintText: 'Gruppenname',
-                        hintStyle: GoogleFonts.plusJakartaSans(color:Color.fromRGBO(230, 231, 233, 0.40)),
+                        hintStyle: GoogleFonts.plusJakartaSans(color: Color.fromRGBO(230, 231, 233, 0.40)),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10), // Rayon des coins de la bordure
-                          borderSide: BorderSide(color: Colors.grey), // Couleur de la bordure
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.grey),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10), // Rayon des coins quand le champ est focalisé
-                          borderSide: BorderSide(color: Color(0xff007C7C)), // Couleur de la bordure quand le champ est focalisé
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Color(0xff007C7C)),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10), // Rayon des coins quand le champ est actif
-                          borderSide: BorderSide(color:Colors.grey), // Couleur de la bordure quand le champ est actif
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.grey),
                         ),
                       ),
                     ),
-
                     SizedBox(height: 10),
-                    // Champ de recherche des utilisateurs
+                    // User search field
                     TextField(
                       style: GoogleFonts.poppins(color: Colors.white),
                       onChanged: (value) {
@@ -72,44 +77,43 @@ void _createGroup(BuildContext context) {
                       },
                       decoration: InputDecoration(
                         hintText: 'suchen...',
-                        hintStyle: GoogleFonts.plusJakartaSans(color:Color.fromRGBO(230, 231, 233, 0.40)),
-                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10), // Rayon des coins de la bordure
-                          borderSide: BorderSide(color: Colors.grey), // Couleur de la bordure
+                        hintStyle: GoogleFonts.plusJakartaSans(color: Color.fromRGBO(230, 231, 233, 0.40)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.grey),
                         ),
-                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10), // Rayon des coins quand le champ est focalisé
-                          borderSide: BorderSide(color: Color(0xff007C7C)), // Couleur de la bordure quand le champ est focalisé
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Color(0xff007C7C)),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10), // Rayon des coins quand le champ est actif
-                          borderSide: BorderSide(color: Colors.grey), // Couleur de la bordure quand le champ est actif
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.grey),
                         ),
-                        
                       ),
-                      
-                      
                     ),
                     SizedBox(height: 10),
-                    Expanded(
-                      child: StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection('users')
-                            .where('name', isGreaterThanOrEqualTo: searchQuery)
-                            .where('name', isLessThanOrEqualTo: searchQuery + '\uf8ff')
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Center(child: Text('Erreur: ${snapshot.error}'));
-                          }
-                          if (!snapshot.hasData) {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                          final users = snapshot.data!.docs;
-                          if (users.isEmpty) {
-                            return Center(child: Text('Aucun utilisateur trouvé.'));
-                          }
-                          return ListView.builder(
+                    // User list that can be scrollable
+                    StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .where('name', isGreaterThanOrEqualTo: searchQuery)
+                          .where('name', isLessThanOrEqualTo: searchQuery + '\uf8ff')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(child: Text('Erreur: ${snapshot.error}'));
+                        }
+                        if (!snapshot.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        final users = snapshot.data!.docs;
+                        if (users.isEmpty) {
+                          return Center(child: Text('Aucun utilisateur trouvé.'));
+                        }
+                        return Container(
+                          height: 300, // Set a fixed height for the ListView
+                          child: ListView.builder(
                             itemCount: users.length,
                             itemBuilder: (context, index) {
                               final user = users[index];
@@ -122,9 +126,12 @@ void _createGroup(BuildContext context) {
                                   style: GoogleFonts.plusJakartaSans(color: Color(0xffCFCFCF)),
                                 ),
                                 trailing: IconButton(
-                                  icon: Icon(selectedUserIds.contains(userId)
-                                      ? Icons.check_circle
-                                      : Icons.add_circle,color: Color(0xff007C7C),),
+                                  icon: Icon(
+                                    selectedUserIds.contains(userId)
+                                        ? Icons.check_circle
+                                        : Icons.add_circle,
+                                    color: Color(0xff007C7C),
+                                  ),
                                   onPressed: () {
                                     setState(() {
                                       if (selectedUserIds.contains(userId)) {
@@ -137,9 +144,9 @@ void _createGroup(BuildContext context) {
                                 ),
                               );
                             },
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -147,16 +154,16 @@ void _createGroup(BuildContext context) {
             ),
             actions: [
               TextButton(
-                child: Text('Stornieren',style: GoogleFonts.plusJakartaSans(color: Color(0xffCFCFCF)),),
+                child: Text('Stornieren', style: GoogleFonts.plusJakartaSans(color: Color(0xffCFCFCF))),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text('erstellen',style: GoogleFonts.plusJakartaSans(color: Color(0xff007C7C),fontWeight: FontWeight.w700),),
+                child: Text('erstellen', style: GoogleFonts.plusJakartaSans(color: Color(0xff007C7C), fontWeight: FontWeight.w700)),
                 onPressed: () async {
                   if (groupName.isNotEmpty && selectedUserIds.isNotEmpty) {
-                    await _saveGroupToFirestore();
+                    await _saveGroupToFirestore(); // Make sure this method is defined
                     Navigator.of(context).pop();
                   }
                 },
@@ -168,6 +175,9 @@ void _createGroup(BuildContext context) {
     },
   );
 }
+
+
+
 
 
 
@@ -259,6 +269,10 @@ bool isLoading = true;
             if (member['invitationAccepted'] == true) {
               acceptedMembers.add(member['userId']); // Ajouter les utilisateurs acceptés
             }
+
+            setState(() {
+              
+            });
           }
 
           if (acceptedMembers.isNotEmpty) {
@@ -285,48 +299,52 @@ bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.only(right:20.0),
-          child: Center(
-            child: Text(
-              'Bestenliste',
-              style: GoogleFonts.plusJakartaSans(
-                color: Color(0xffCFCFCF),
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
+    if (isLoading){
+      return Center(child : CircularProgressIndicator());
+    }
+    return  Scaffold(
+        appBar: AppBar(
+          title: Padding(
+            padding: const EdgeInsets.only(right:20.0),
+            child: Center(
+              child: Text(
+                'Bestenliste',
+                style: GoogleFonts.plusJakartaSans(
+                  color: Color(0xffCFCFCF),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ),
+          
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Image.asset("assets/icons/back_arrow.png"),
+          ),
         ),
-        
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Image.asset("assets/icons/back_arrow.png"),
-        ),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildToggleButton('Alle Benutzer', showAllUsers),
-                SizedBox(width: 10),
-                _buildToggleButton('Persönliche Gruppe', !showAllUsers),
-              ],
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildToggleButton('Alle Benutzer', showAllUsers),
+                  SizedBox(width: 10),
+                  _buildToggleButton('Persönliche Gruppe', !showAllUsers),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: showAllUsers ? _buildAllUsersList() : _buildGroupUsersList(),
-          ),
-        ],
-      ),
-    );
+            Expanded(
+              child: showAllUsers ? _buildAllUsersList() : _buildGroupUsersList(),
+            ),
+          ],
+        ),
+      );
+    
   }
 
   // Bouton pour basculer entre afficher tous les utilisateurs ou seulement les utilisateurs du groupe
@@ -589,8 +607,48 @@ Widget _buildGroupUsersList() {
               }).toList(),
             ),
           ),
+          Platform.isIOS ?
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(20),
+            child: ElevatedButton(
+              onPressed: () {
+                _createGroup(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(
+                    color: Color.fromRGBO(230, 231, 233, 0.50),
+                    width: 0.85,
+                  ),
+                ),
+              ),
+              child: SizedBox(
+                height: 100,
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Color(0xff007C7C),
+                        child: Icon(Icons.add, size: 25, color: Colors.black),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          "Erstellen Sie eine \npersönliche Gruppe",
+                          style: GoogleFonts.plusJakartaSans(color: Color(0xffE6E7E9), fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ) : 
+            Padding(
+            padding: const EdgeInsets.all(10),
             child: ElevatedButton(
               onPressed: () {
                 _createGroup(context);
@@ -633,6 +691,7 @@ Widget _buildGroupUsersList() {
     },
   );
 }
+
 
   Widget _buildUserTile(String name, int points, int position) {
     return Container(
