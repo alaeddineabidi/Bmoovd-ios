@@ -43,7 +43,7 @@ class _ShopMainPageState extends State<ShopMainPage> {
         .doc(userId)
         .collection('cart')
         .get();
-    
+
     setState(() {
       cartItemCount = cartSnapshot.docs.length;
     });
@@ -87,7 +87,7 @@ class _ShopMainPageState extends State<ShopMainPage> {
         'name': doc['name'],
         'price': doc['price'],
         'imageUrl': imageUrl,
-        'Description':doc["Description"]
+        'Description': doc["Description"]
       });
     }
     return products;
@@ -104,43 +104,42 @@ class _ShopMainPageState extends State<ShopMainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
-  title: Center(
-    child: Padding(
-      padding: const EdgeInsets.only(left: 30.0),
-      child: Text(
-        'Shop',
-        style: GoogleFonts.plusJakartaSans(
-          color: Color(0xFFE6E7E9),
-          fontWeight: FontWeight.w700,
-          fontSize: 18,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    ),
-  ),
-  actions: [
-    Badge(
-      label: Text(
-        cartItemCount.toString(),  // Ensure this displays the correct count
-        style: GoogleFonts.plusJakartaSans(color: Colors.white,fontSize: 10),
-      ),
-      child: IconButton(
-        icon: Image.asset('assets/icons/cart.png'),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CartPage(),
+      appBar: AppBar(
+        title: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 30.0),
+            child: Text(
+              'Shop',
+              style: GoogleFonts.plusJakartaSans(
+                color: Color(0xFFE6E7E9),
+                fontWeight: FontWeight.w700,
+                fontSize: 18,
+              ),
+              textAlign: TextAlign.center,
             ),
-          );
-        },
+          ),
+        ),
+        actions: [
+          Badge(
+            label: Text(
+              cartItemCount.toString(), // Ensure this displays the correct count
+              style: GoogleFonts.plusJakartaSans(color: Colors.white, fontSize: 10),
+            ),
+            child: IconButton(
+              icon: Image.asset('assets/icons/cart.png'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CartPage(),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+        toolbarHeight: 80,
       ),
-    ),
-  ],
-  toolbarHeight: 80,
-),
-
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _fetchProducts(),
         builder: (context, snapshot) {
@@ -158,8 +157,7 @@ class _ShopMainPageState extends State<ShopMainPage> {
               crossAxisCount: 2,
               crossAxisSpacing: 10.0,
               mainAxisSpacing: 10.0,
-              childAspectRatio: 0.75, 
-              
+              childAspectRatio: 0.75,
             ),
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
@@ -167,99 +165,95 @@ class _ShopMainPageState extends State<ShopMainPage> {
               return LayoutBuilder(
                 builder: (context, constraints) {
                   return GestureDetector(
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProductDetailsPage(product: product),
-      ),
-    );
-  },
-  child: Container(
-    height: 300, // Hauteur fixe de la Card augmentée
-    child: Card(
-      color: Colors.grey[900],
-      elevation: 6.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-        side: BorderSide(color: Colors.transparent, width: 1.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12.0),
-              topRight: Radius.circular(12.0),
-            ),
-            child: Image.network(
-              product['imageUrl'],
-              fit: BoxFit.cover,
-              height: 150, // Ajuste la hauteur de l'image si nécessaire
-              width: double.infinity,
-            ),
-          ),
-          Container(
-            height: 73, // Hauteur du conteneur augmentée
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(16.0)),
-              border: Border.all(color: Color(0xFFE6E7E9), width: 0.01),
-              gradient: LinearGradient(
-                colors: [
-                  Color(0x1A0B5959), // rgba(11, 89, 89, 0.10)
-                  Color(0xFF122120),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
-                  blurRadius: 17.0,
-                  spreadRadius: 0.0,
-                ),
-              ],
-            ),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 0.0, sigmaY: 0.0),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top:20.0,left:10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                       Text(
-                          product['name'],
-                          style: GoogleFonts.plusJakartaSans(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12.0,
-                            color: Color(0xFFE6E7E9),
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetailsPage(product: product),
                         ),
-                        Text(
-                          '${product['price'].toStringAsFixed(2)}€',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontWeight: FontWeight.w700,
-                            
-                            color: Color(0xFFE6E7E9),
-                            fontSize: 12.8,
-                          ),
+                      );
+                    },
+                    child: Container(
+                      height: 300, // Hauteur fixe de la Card augmentée
+                      child: Card(
+                        color: Colors.grey[900],
+                        elevation: 6.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.0),
+                          side: BorderSide(color: Colors.transparent, width: 1.0),
                         ),
-                      
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-  ),
-);
-
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(12.0),
+                                topRight: Radius.circular(12.0),
+                              ),
+                              child: Image.network(
+                                product['imageUrl'],
+                                fit: BoxFit.cover,
+                                height: 350, // Ajuste la hauteur de l'image si nécessaire
+                                width: double.infinity,
+                              ),
+                            ),
+                            Expanded( // Dynamically occupy the remaining space
+                              child: Container(
+                                 width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(16.0)),
+                                  border: Border.all(color: Color(0xFFE6E7E9), width: 0.01),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color.fromRGBO(0, 124, 124, 0.10), // Vert pour le dégradé du bas
+                                      Color(0xff122120), // Couleur verte plus foncée
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.3),
+                                      blurRadius: 17.0,
+                                      spreadRadius: 0.0,
+                                    ),
+                                  ],
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 20.0, left: 10),
+                                  child: Center(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          product['name'],
+                                          style: GoogleFonts.plusJakartaSans(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 12.0,
+                                            color: Color(0xFFE6E7E9),
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Text(
+                                          '${product['price'].toStringAsFixed(2)}€',
+                                          style: GoogleFonts.plusJakartaSans(
+                                            fontWeight: FontWeight.w700,
+                                            color: Color(0xFFE6E7E9),
+                                            fontSize: 12.8,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
                 },
               );
             },

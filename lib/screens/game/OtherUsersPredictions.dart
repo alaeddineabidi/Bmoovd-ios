@@ -166,7 +166,7 @@ Widget build(BuildContext context) {
                         Spacer(),
                                         Container(
                                           height: 41,
-                                          width: 65,
+                                          width: 80,
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(4),
                                             color:Color(0xff15161A) ,

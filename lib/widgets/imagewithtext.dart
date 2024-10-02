@@ -14,23 +14,26 @@ class ImageWithTextOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Obtenir la largeur de l'écran
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     return Stack(
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(10.0), // Correction du borderRadius
           child: Container(
-            height: 594,
-            width: 500,
+            width: screenWidth, // Utiliser la largeur de l'écran
             child: Image.asset(
               imagePath,
-              height: 594.281,
+              height: 594.281, // Hauteur fixe
+              width: screenWidth, // Utiliser la largeur de l'écran
               fit: BoxFit.cover, // Assure que l'image couvre toute la zone
             ),
           ),
         ),
         Container(
           height: 594,
-          width: 500,
+          width: screenWidth, // Utiliser la largeur de l'écran
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             gradient: LinearGradient(
@@ -61,8 +64,8 @@ class ImageWithTextOverlay extends StatelessWidget {
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal,
-                       height: 18.773 / 12.8, // Hauteur de ligne relative
-                       letterSpacing: -0.348,
+                      height: 18.773 / 12.8, // Hauteur de ligne relative
+                      letterSpacing: -0.348,
                     ),
                   ),
                   TextSpan(

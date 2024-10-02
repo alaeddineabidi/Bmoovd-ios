@@ -375,6 +375,7 @@ void _showWelcomeDialog(BuildContext context, List<dynamic> teams) {
                                     ),
                                     SizedBox(height: 10,),
                                     Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         homeTeam['logo'] != null
                                             ? Image.network(
