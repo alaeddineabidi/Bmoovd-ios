@@ -98,11 +98,16 @@ class _ShopMainPageState extends State<ShopMainPage> {
       'productId': productId,
       'timestamp': FieldValue.serverTimestamp(),
     });
-    _updateCartItemCount(); // Update cart item count
+    _updateCartItemCount();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+        double imageHeight = screenWidth > 600 ? 350 : 150; // Si la largeur de l'écran est supérieure à 600px, on suppose que c'est un iPad.
+
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -193,7 +198,7 @@ class _ShopMainPageState extends State<ShopMainPage> {
                               child: Image.network(
                                 product['imageUrl'],
                                 fit: BoxFit.cover,
-                                height: 350, // Ajuste la hauteur de l'image si nécessaire
+                                height: imageHeight, // Ajuste la hauteur de l'image si nécessaire
                                 width: double.infinity,
                               ),
                             ),
